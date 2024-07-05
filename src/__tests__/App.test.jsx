@@ -1,5 +1,6 @@
-// __tests__/App.test.jsx
+// src/__tests__/App.test.jsx
 
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import App from '../App';
