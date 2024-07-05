@@ -1,4 +1,4 @@
-// login.test.js
+// tests/login.test.js
 
 import { test, expect } from '@playwright/test';
 
