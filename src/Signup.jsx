@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Compressor from 'compressorjs';
 import axios from 'axios';
+import Header from "./components/Header";
 
 const Signup = () => {
   const formik = useFormik({
@@ -50,6 +51,7 @@ const Signup = () => {
 
   return (
     <div>
+      <Header />
       <h1>新規登録</h1>
       <form onSubmit={formik.handleSubmit}>
         <label>

@@ -4,6 +4,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import Header from "./components/Header";
 
 const Login = () => {
   const formik = useFormik({
@@ -28,6 +29,7 @@ const Login = () => {
 
   return (
     <div>
+      <Header />
       <h1>ログイン</h1>
       <form onSubmit={formik.handleSubmit}>
         <label>

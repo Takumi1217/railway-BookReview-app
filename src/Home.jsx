@@ -1,12 +1,13 @@
 // Home.jsx
 
 import React from "react";
+import Header from "./components/Header";
 
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to the Railway Book Review App</h1>
-      <p>This is the home page.</p>
+      <Header />
+      <h1>Home</h1>
     </div>
   );
 };
