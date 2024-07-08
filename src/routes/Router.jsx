@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import Header from "../components/Header";
 import Home from "../Home";
 import Signup from "../Signup";
 import Login from "../Login";
-import Header from "../components/Header";
 
 const App = () => {
   return (
