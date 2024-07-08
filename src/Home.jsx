@@ -1,18 +1,24 @@
 // Home.jsx
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBooks, setPage, selectBooks, selectPage } from './redux/booksSlice';
+import BookList from './components/BookList';
+import Pagination from './components/Pagination';
 import './Home.css';
 
 const Home = () => {
-  const [books, setBooks] = useState([]);
+  const dispatch = useDispatch();
+  const books = useSelector(selectBooks);
+  const page = useSelector(selectPage);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('https://railway.bookreview.techtrain.dev/public/books');
+        const response = await fetch(`https://railway.bookreview.techtrain.dev/public/books?offset=${page * 10}`);
         if (response.ok) {
           const data = await response.json();
-          setBooks(data.slice(0, 10)); // 先頭の10件を取得
+          dispatch(setBooks(data));
         } else {
           console.error('Failed to fetch books');
         }
@@ -22,20 +28,15 @@ const Home = () => {
     };
 
     fetchBooks();
-  }, []);
+  }, [dispatch, page]);
 
   return (
     <div className="home">
       <h1 className="home__title">書籍レビュー一覧</h1>
-      <ul className="home__list">
-        {books.map(book => (
-          <li key={book.id} className="home__item">
-            <div className="home__item-title">{book.title}</div>
-            <div className="home__item-review">{book.review}</div>
-            <div className="home__item-reviewer">レビュワー: {book.reviewer}</div>
-          </li>
-        ))}
-      </ul>
+      <BookList books={books} />
+      <div className="home__pagination">
+        <Pagination />
+      </div>
     </div>
   );
 };
