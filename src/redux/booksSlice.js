@@ -1,4 +1,4 @@
-// booksSlice.js
+// src/redux/booksSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
 

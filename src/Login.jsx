@@ -1,58 +1,50 @@
-// Login.jsx
+// src/Login.jsx
 
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import './Login.css';
 
 const Login = () => {
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      email: Yup.string()
-        .email("無効なメールアドレスです")
-        .required("必須項目です"),
-      password: Yup.string().required("必須項目です"),
-    }),
-    onSubmit: (values) => {
-      axios
-        .post(
-          "https://app.swaggerhub.com/apis/INFO_3/BookReviewApplication/1.0.0/signin",
-          values
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (values) => {
+    try {
+      const response = await axios.post('https://railway.bookreview.techtrain.dev/signin', values);
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      navigate('/');
+    } catch (err) {
+      setError('Login failed');
+    }
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
   });
 
   return (
-    <div>
-      <h1>ログイン</h1>
-      <form onSubmit={formik.handleSubmit}>
-        <label>
-          メールアドレス:
-          <input type="email" {...formik.getFieldProps("email")} />
-          {formik.touched.email && formik.errors.email ? (
-            <div>{formik.errors.email}</div>
-          ) : null}
-        </label>
-        <label>
-          パスワード:
-          <input type="password" {...formik.getFieldProps("password")} />
-          {formik.touched.password && formik.errors.password ? (
-            <div>{formik.errors.password}</div>
-          ) : null}
-        </label>
-        <button type="submit">ログイン</button>
-      </form>
-      <a href="/signup">新規登録はこちら</a>
+    <div className="login">
+      <h2 className="login__title">ログイン</h2>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleLogin}
+      >
+        <Form className="login__form">
+          <Field type="email" name="email" placeholder="Email" className="login__input" />
+          <ErrorMessage name="email" component="div" className="login__error" />
+          <Field type="password" name="password" placeholder="Password" className="login__input" />
+          <ErrorMessage name="password" component="div" className="login__error" />
+          {error && <p className="login__error">{error}</p>}
+          <button type="submit" className="login__button">ログイン</button>
+        </Form>
+      </Formik>
+      <a href="/signup" className="login__link">Signup</a>
     </div>
   );
 };

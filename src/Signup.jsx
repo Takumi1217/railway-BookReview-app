@@ -1,102 +1,79 @@
-// Signup.jsx
+// src/Signup.jsx
 
-import React from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import Compressor from "compressorjs";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Compressor from 'compressorjs';
+import axios from 'axios';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import './Signup.css';
 
 const Signup = () => {
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      avatar: null,
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("必須項目です"),
-      email: Yup.string()
-        .email("無効なメールアドレスです")
-        .required("必須項目です"),
-      password: Yup.string()
-        .min(6, "6文字以上で入力してください")
-        .required("必須項目です"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password"), null], "パスワードが一致しません")
-        .required("必須項目です"),
-    }),
-    onSubmit: (values) => {
-      const formData = new FormData();
-      formData.append("username", values.username);
-      formData.append("email", values.email);
-      formData.append("password", values.password);
-      formData.append("avatar", values.avatar);
+  const [icon, setIcon] = useState(null);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-      axios
-        .post(
-          "https://app.swaggerhub.com/apis/INFO_3/BookReviewApplication/1.0.0/users",
-          formData
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
+  const handleSignup = async (values) => {
+    try {
+      const response = await axios.post('https://railway.bookreview.techtrain.dev/users', values);
+      const token = response.data.token;
+
+      if (icon) {
+        new Compressor(icon, {
+          quality: 0.6,
+          maxWidth: 800,
+          success(result) {
+            const formData = new FormData();
+            formData.append('icon', result);
+
+            axios.post('https://railway.bookreview.techtrain.dev/uploads', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+              },
+            });
+          },
+          error(err) {
+            setError('Icon upload failed');
+          },
         });
-    },
-  });
+      }
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    new Compressor(file, {
-      quality: 0.6,
-      success(result) {
-        formik.setFieldValue("avatar", result);
-      },
-    });
+      navigate('/login');
+    } catch (err) {
+      setError('Signup failed');
+    }
   };
 
+  const validationSchema = Yup.object({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+  });
+
   return (
-    <div>
-      <h1>新規登録</h1>
-      <form onSubmit={formik.handleSubmit}>
-        <label>
-          ユーザー名:
-          <input type="text" {...formik.getFieldProps("username")} />
-          {formik.touched.username && formik.errors.username ? (
-            <div>{formik.errors.username}</div>
-          ) : null}
-        </label>
-        <label>
-          メールアドレス:
-          <input type="email" {...formik.getFieldProps("email")} />
-          {formik.touched.email && formik.errors.email ? (
-            <div>{formik.errors.email}</div>
-          ) : null}
-        </label>
-        <label>
-          パスワード:
-          <input type="password" {...formik.getFieldProps("password")} />
-          {formik.touched.password && formik.errors.password ? (
-            <div>{formik.errors.password}</div>
-          ) : null}
-        </label>
-        <label>
-          パスワード確認:
-          <input type="password" {...formik.getFieldProps("confirmPassword")} />
-          {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-            <div>{formik.errors.confirmPassword}</div>
-          ) : null}
-        </label>
-        <label>
-          アバター:
-          <input type="file" onChange={handleImageChange} />
-        </label>
-        <button type="submit">登録</button>
-      </form>
-      <a href="/login">ログインはこちら</a>
+    <div className="signup">
+      <h2 className="signup__title">サインアップ</h2>
+      <Formik
+        initialValues={{ name: '', email: '', password: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleSignup}
+      >
+        {({ setFieldValue }) => (
+          <Form className="signup__form">
+            <Field type="text" name="name" placeholder="Name" className="signup__input" />
+            <ErrorMessage name="name" component="div" className="signup__error" />
+            <Field type="email" name="email" placeholder="Email" className="signup__input" />
+            <ErrorMessage name="email" component="div" className="signup__error" />
+            <Field type="password" name="password" placeholder="Password" className="signup__input" />
+            <ErrorMessage name="password" component="div" className="signup__error" />
+            <input type="file" accept="image/*" onChange={(e) => setIcon(e.target.files[0])} className="signup__file" />
+            {error && <p className="signup__error">{error}</p>}
+            <button type="submit" className="signup__button">サインアップ</button>
+          </Form>
+        )}
+      </Formik>
+      <a href="/login" className="signup__link">Login</a>
     </div>
   );
 };
