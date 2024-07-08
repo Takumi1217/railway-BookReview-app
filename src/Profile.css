@@ -1,0 +1,42 @@
+/* src/Profile.css */
+
+.profile {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.profile__title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__input {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.profile__error {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.profile__button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.profile__button:hover {
+  background-color: #0056b3;
+}

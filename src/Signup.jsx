@@ -17,6 +17,7 @@ const Signup = () => {
     try {
       const response = await axios.post('https://railway.bookreview.techtrain.dev/users', values);
       const token = response.data.token;
+      localStorage.setItem('token', token);
 
       if (icon) {
         new Compressor(icon, {
@@ -39,7 +40,16 @@ const Signup = () => {
         });
       }
 
-      navigate('/login');
+      // ユーザー情報を取得して保存する
+      const userResponse = await axios.get('https://railway.bookreview.techtrain.dev/users', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const userName = userResponse.data.name;
+      localStorage.setItem('userName', userName);
+
+      navigate('/');
     } catch (err) {
       setError('Signup failed');
     }
