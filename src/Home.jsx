@@ -11,11 +11,17 @@ const Home = () => {
   const dispatch = useDispatch();
   const books = useSelector(selectBooks);
   const page = useSelector(selectPage);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch(`https://railway.bookreview.techtrain.dev/public/books?offset=${page * 10}`);
+        const url = token 
+          ? `https://railway.bookreview.techtrain.dev/books?offset=${page * 10}` 
+          : `https://railway.bookreview.techtrain.dev/public/books?offset=${page * 10}`;
+        const response = await fetch(url, {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+        });
         if (response.ok) {
           const data = await response.json();
           dispatch(setBooks(data));
@@ -28,7 +34,7 @@ const Home = () => {
     };
 
     fetchBooks();
-  }, [dispatch, page]);
+  }, [dispatch, page, token]);
 
   return (
     <div className="home">
