@@ -7,6 +7,9 @@ import Signup from "../Signup";
 import Login from "../Login";
 import Profile from "../Profile";
 import Home from "../Home";
+import NewBook from "../NewBook";
+import DetailBook from "../DetailBook";
+import EditBook from "../EditBook";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -27,6 +30,10 @@ const App = () => {
         <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+        <Route path="/new" element={<PrivateRoute><NewBook /></PrivateRoute>} />
+        <Route path="/detail" element={<PrivateRoute><DetailBook /></PrivateRoute>} />
+        <Route path="/edit" element={<PrivateRoute><EditBook /></PrivateRoute>} />
+
       </Routes>
     </>
   );
