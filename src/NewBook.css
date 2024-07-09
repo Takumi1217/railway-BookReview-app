@@ -1,1 +1,44 @@
 /* src/NewBook.css */
+
+.new-book {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .new-book h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .new-book .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .new-book label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .new-book input,
+  .new-book textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .new-book button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .new-book button:hover {
+    background-color: #0056b3;
+  }
+  

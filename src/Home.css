@@ -1,18 +1,36 @@
 /* src/Home.css */
 
 .home {
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-  
-  .home__title {
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
-  
-  .home__pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.home__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home__title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.home__new-book-button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.home__new-book-button:hover {
+  background-color: #0056b3;
+}
+
+.home__pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

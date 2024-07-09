@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { setBooks, setPage, selectBooks, selectPage } from './redux/booksSlice';
 import BookList from './components/BookList';
 import Pagination from './components/Pagination';
@@ -12,6 +13,7 @@ const Home = () => {
   const books = useSelector(selectBooks);
   const page = useSelector(selectPage);
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -36,9 +38,18 @@ const Home = () => {
     fetchBooks();
   }, [dispatch, page, token]);
 
+  const handleNewBookClick = () => {
+    navigate('/new');
+  };
+
   return (
     <div className="home">
-      <h1 className="home__title">書籍レビュー一覧</h1>
+      <div className="home__header">
+        <h1 className="home__title">書籍レビュー一覧</h1>
+        <button className="home__new-book-button" onClick={handleNewBookClick}>
+          新規登録
+        </button>
+      </div>
       <BookList books={books} />
       <div className="home__pagination">
         <Pagination />
