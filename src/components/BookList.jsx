@@ -8,8 +8,23 @@ const BookList = ({ books }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  const handleBookClick = (id) => {
-    navigate(`/detail/${id}`);
+  const handleBookClick = async (id) => {
+    try {
+      if (token) {
+        await fetch('https://railway.bookreview.techtrain.dev/logs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ selectBookId: id }),
+        });
+      }
+
+      navigate(`/detail/${id}`);
+    } catch (error) {
+      console.error('An error occurred while sending log:', error);
+    }
   };
 
   const handleEditClick = (id) => {

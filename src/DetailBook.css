@@ -1,1 +1,52 @@
 /* src/DetailBook.css */
+
+.detail-book {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .detail-book__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .detail-book__title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .detail-book__edit-button {
+    position: absolute;
+    right: 0;
+    padding: 5px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .detail-book__edit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .detail-book__link,
+  .detail-book__detail,
+  .detail-book__review,
+  .detail-book__reviewer {
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    font-size: 18px;
+    color: #FF0000;
+  }
+  
